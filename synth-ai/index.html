@@ -461,6 +461,154 @@
     .reveal { opacity: 0; transform: translateY(20px); transition: opacity .6s var(--ease), transform .6s var(--ease); }
     .reveal.visible { opacity: 1; transform: none; }
     @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } }
+
+    /* ═══════════════════════════════════════════════════════════
+       HAMBURGER MENU (mobile)
+    ═══════════════════════════════════════════════════════════ */
+    .hamburger {
+      display: none; flex-direction: column; justify-content: center; gap: 5px;
+      width: 40px; height: 40px; background: none; border: none; cursor: pointer;
+      padding: 6px; border-radius: 6px; transition: background .2s;
+    }
+    .hamburger:hover { background: var(--bg-light); }
+    .hamburger span {
+      display: block; width: 22px; height: 2px;
+      background: var(--text-sub); border-radius: 2px;
+      transition: transform .3s var(--ease), opacity .3s;
+    }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    /* Mobile nav drawer */
+    .mobile-nav {
+      display: none; position: fixed; inset: var(--header-h) 0 0 0; z-index: 90;
+      background: #fff; overflow-y: auto; padding: 1.5rem 1.5rem 3rem;
+      border-top: 1px solid var(--border);
+      flex-direction: column; gap: 0;
+    }
+    .mobile-nav.open { display: flex; }
+    .mobile-nav-link {
+      font-size: 1rem; font-weight: 700; color: var(--text-sub); text-decoration: none;
+      padding: .875rem 0; border-bottom: 1px solid var(--border); display: block;
+      transition: color .15s;
+    }
+    .mobile-nav-link:hover { color: var(--primary); opacity: 1; }
+    .mobile-nav-cta { margin-top: 1.5rem; }
+    .mobile-nav-cta .btn { width: 100%; justify-content: center; }
+
+    /* ═══════════════════════════════════════════════════════════
+       FULL-WIDTH SECTIONS — backgrounds bleed edge-to-edge
+    ═══════════════════════════════════════════════════════════ */
+    .hero, .tags-bar, .jump-nav, .stats-band,
+    .cta-band, .site-footer, .section-dark { width: 100%; }
+
+    /* ═══════════════════════════════════════════════════════════
+       RESPONSIVE — mobile-first breakpoints
+    ═══════════════════════════════════════════════════════════ */
+
+    /* ── Small mobile: 320px – 479px ──────────────────────── */
+    @media (max-width: 479px) {
+      :root { --header-h: 60px; }
+
+      .header-divider,
+      .header-label,
+      .badge,
+      .date-chip { display: none; }
+      .header-logo { height: 40px; }
+
+      .hero {
+        padding-top: calc(var(--header-h) + 2.5rem);
+        padding-bottom: 3rem; min-height: 0;
+      }
+      .hero-eyebrow { font-size: .625rem; padding: .25rem .75rem; }
+      .hero-actions { flex-direction: column; align-items: stretch; gap: .75rem; }
+      .hero-actions .btn { width: 100%; justify-content: center; }
+
+      .section-white, .section-light, .section-dark,
+      .platform-notes { padding: 2.75rem 0; }
+      .stats-band { padding: 2.75rem 0; }
+      .cta-band { padding: 3.5rem 0; }
+
+      .product-hdr { flex-direction: column; align-items: flex-start; }
+      .product-logo { height: 36px; }
+
+      .group-desc { max-width: 100%; }
+      .ri { gap: .625rem; padding: 1rem 0; }
+      .ri-title { font-size: .875rem; }
+      .ri-desc { font-size: .8125rem; }
+      .play-btn { width: 1.875rem; height: 1.875rem; }
+
+      .items-list { padding-left: 1rem; }
+      .dark-items-list { padding-left: 1rem; }
+
+      .stats-grid { gap: 1.5rem 1.5rem; }
+      .stat-number { font-size: 2.25rem; }
+
+      .cta-band-btns { flex-direction: column; align-items: stretch; gap: .75rem; }
+      .cta-band-btns .btn { width: 100%; justify-content: center; }
+
+      .footer-grid { gap: 1.75rem; }
+      .footer-bottom { flex-direction: column; align-items: flex-start; gap: .5rem; }
+
+      .jump-nav-label { display: none; }
+      .tags-bar-label { display: none; }
+
+      .hamburger { display: flex; }
+      .header-right .btn { display: none; }
+    }
+
+    /* ── Mobile: 480px – 639px ─────────────────────────────── */
+    @media (min-width: 480px) and (max-width: 639px) {
+      :root { --header-h: 64px; }
+
+      .header-label { display: none; }
+      .header-divider { display: none; }
+      .header-logo { height: 44px; }
+
+      .hero {
+        padding-top: calc(var(--header-h) + 3rem);
+        padding-bottom: 3.5rem; min-height: 0;
+      }
+      .hero-actions { flex-wrap: wrap; }
+      .hero-actions .btn { flex: 1 1 200px; justify-content: center; }
+
+      .section-white, .section-light, .section-dark,
+      .platform-notes { padding: 3.25rem 0; }
+      .stats-band { padding: 3rem 0; }
+      .cta-band { padding: 4rem 0; }
+
+      .product-logo { height: 42px; }
+      .ri { gap: .75rem; }
+      .jump-nav-label { display: none; }
+
+      .hamburger { display: flex; }
+      .header-right .btn { display: none; }
+    }
+
+    /* ── Tablet: 640px – 1023px ────────────────────────────── */
+    @media (min-width: 640px) and (max-width: 1023px) {
+      .hero {
+        padding-top: calc(var(--header-h) + 4rem);
+        padding-bottom: 4.5rem;
+      }
+      .section-white, .section-light, .section-dark,
+      .platform-notes { padding: 4rem 0; }
+      .stats-band { padding: 3.5rem 0; }
+      .cta-band { padding: 5rem 0; }
+      .product-logo { height: 48px; }
+    }
+
+    /* ── Desktop: 1024px+ ──────────────────────────────────── */
+    @media (min-width: 1024px) {
+      .hamburger { display: none; }
+      .mobile-nav { display: none !important; }
+    }
+
+    /* ── Wide: 1440px+ ─────────────────────────────────────── */
+    @media (min-width: 1440px) {
+      .container { max-width: 1400px; }
+    }
   </style>
 </head>
 <body>
@@ -480,10 +628,28 @@
           <span class="badge">v0.1 GA</span>
           <span class="date-chip">22 June 2026</span>
           <a href="https://bloo.io/request-demo" class="btn btn-gold btn-sm">Request demo</a>
+          <button type="button" class="hamburger" id="hamburger" aria-label="Toggle navigation" aria-expanded="false">
+            <span></span><span></span><span></span>
+          </button>
         </div>
       </div>
     </div>
   </header>
+
+  <!-- MOBILE NAV DRAWER -->
+  <nav class="mobile-nav" id="mobile-nav" aria-label="Mobile navigation">
+    <a href="#auth" class="mobile-nav-link">Authentication</a>
+    <a href="#pipeline" class="mobile-nav-link">Pipeline</a>
+    <a href="#multi-llm" class="mobile-nav-link">Multi-LLM</a>
+    <a href="#token-usage" class="mobile-nav-link">Token Usage</a>
+    <a href="#embeddings" class="mobile-nav-link">Embeddings</a>
+    <a href="#recommendations" class="mobile-nav-link">Recommendations</a>
+    <a href="#deployment" class="mobile-nav-link">Deployment</a>
+    <a href="../crucible/index.html" class="mobile-nav-link">Crucible →</a>
+    <div class="mobile-nav-cta">
+      <a href="https://bloo.io/request-demo" class="btn btn-gold">Request demo</a>
+    </div>
+  </nav>
 
   <!-- HERO -->
   <section class="hero">
@@ -799,8 +965,30 @@
   </footer>
 
   <script>
+    // Header scroll shadow
     const hdr = document.getElementById('site-header');
     window.addEventListener('scroll', () => hdr.classList.toggle('scrolled', window.scrollY > 8), { passive: true });
+
+    // Hamburger menu
+    const hamburger = document.getElementById('hamburger');
+    const mobileNav = document.getElementById('mobile-nav');
+    hamburger.addEventListener('click', () => {
+      const open = mobileNav.classList.toggle('open');
+      hamburger.classList.toggle('open', open);
+      hamburger.setAttribute('aria-expanded', open);
+      document.body.style.overflow = open ? 'hidden' : '';
+    });
+    // Close drawer when a link is tapped
+    mobileNav.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        mobileNav.classList.remove('open');
+        hamburger.classList.remove('open');
+        hamburger.setAttribute('aria-expanded', 'false');
+        document.body.style.overflow = '';
+      });
+    });
+
+    // Scroll-reveal
     const io = new IntersectionObserver(
       es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } }),
       { threshold: 0.05, rootMargin: '0px 0px -20px 0px' }
