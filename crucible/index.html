@@ -325,18 +325,40 @@
     .sub-section-title { font-size: .875rem; font-weight: 700; color: var(--text); margin-bottom: .5rem; }
     .sub-section-desc { font-size: .875rem; color: var(--text-sub); margin-bottom: .75rem; }
 
-    /* Feature card grid (replaces data-tables) */
-    .card-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin: 1rem 0; }
-    .card-grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
-    .fcard { background: #f8fafc; border: 1px solid var(--border); border-radius: 10px; padding: 1.125rem 1.25rem; }
-    .fcard-label { font-size: .6875rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--secondary); margin-bottom: .5rem; font-family: 'Courier New', monospace; }
-    .fcard-title { font-size: .9375rem; font-weight: 700; color: var(--text); margin-bottom: .375rem; }
-    .fcard-desc { font-size: .875rem; color: var(--text-sub); line-height: 1.6; }
-    .bullet-list { list-style: none; padding: 0; margin: .75rem 0; }
-    .bullet-list li { font-size: .875rem; color: var(--text-sub); padding: .3rem 0 .3rem 1.25rem; position: relative; line-height: 1.55; }
+    /* ── Card grid — Bloo platform overview style ─────────────── */
+    .card-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin: 1.25rem 0; }
+    .card-grid.cols-2 { grid-template-columns: repeat(2, 1fr); }
+    .card-grid.cols-4 { grid-template-columns: repeat(4, 1fr); }
+    .fcard {
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 1.25rem 1.375rem 1.375rem;
+      display: flex; flex-direction: column; gap: .625rem;
+    }
+    .fcard-intro {
+      background: #edf3ee;
+      border: 1px solid #d4e4d6;
+    }
+    /* Card header: logo + divider + category */
+    .fcard-hdr { display: flex; align-items: center; gap: .5rem; margin-bottom: .125rem; }
+    .fcard-logo { height: 22px; width: auto; display: block; }
+    .fcard-hdiv { width: 1px; height: 13px; background: #c8ced6; flex-shrink: 0; }
+    .fcard-cat {
+      font-size: .6rem; font-weight: 700; letter-spacing: .11em;
+      text-transform: uppercase; color: #8a96a3; line-height: 1;
+    }
+    .fcard-title { font-size: .9375rem; font-weight: 700; color: var(--text); line-height: 1.3; }
+    .fcard-intro-title { font-size: 1rem; font-weight: 700; color: var(--text); line-height: 1.3; }
+    .fcard-desc { font-size: .875rem; color: #4b5563; line-height: 1.65; margin: 0; }
+    .bullet-list { list-style: none; padding: 0; margin: .25rem 0 0; }
+    .bullet-list li { font-size: .875rem; color: #4b5563; padding: .25rem 0 .25rem 1.25rem; position: relative; line-height: 1.55; }
     .bullet-list li::before { content: '–'; position: absolute; left: 0; color: var(--secondary); font-weight: 700; }
     .bullet-list li strong { color: var(--text); }
-    @media (max-width: 639px) { .card-grid, .card-grid.cols-3 { grid-template-columns: 1fr; } }
+    .sub-section-title { font-size: .8125rem; font-weight: 700; color: var(--text-muted); letter-spacing: .04em; margin: 1.5rem 0 .625rem; text-transform: uppercase; }
+    /* Responsive */
+    @media (max-width: 1023px) { .card-grid { grid-template-columns: repeat(2, 1fr); } .card-grid.cols-2 { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 599px) { .card-grid, .card-grid.cols-2, .card-grid.cols-4 { grid-template-columns: 1fr; } }
     .mt-section { margin-top: 1.25rem; margin-bottom: .5rem; }
     .mb-section { margin-bottom: 1.25rem; }
     .italic-note { font-style: italic; margin-top: .5rem; }
@@ -589,131 +611,173 @@
 
         <div class="feature-groups">
 
-  <!-- Triage Agent -->
-  <div id="triage-agent" class="group-anchor reveal">
-    <h3 class="group-heading">Triage Agent</h3>
-    <p class="group-desc">The Triage Agent is the single owner of the full post-playbook investigation pipeline. It orchestrates all specialist Investigation Agents, aggregates their findings into a confidence-weighted threat score, and produces the final verdict and routing action that drives every downstream decision in Crucible. Every run is deterministic, observable, and produces a complete audit record.</p>
+          <!-- Triage Agent -->
+          <div id="triage-agent" class="group-anchor reveal">
+            <h3 class="group-heading">Triage Agent</h3>
+            <p class="group-desc">The Triage Agent is the single owner of the full post-playbook investigation pipeline. It orchestrates all specialist Investigation Agents, aggregates their findings into a confidence-weighted threat score, and produces the final verdict and routing action that drives every downstream decision in Crucible. Every run is deterministic, observable, and produces a complete audit record.</p>
+            <div class="items-list">
+              <div class="ri">
+                <div class="ri-body"><div class="ri-top"><span class="ri-title">Triage Verdict — Active</span><span class="ri-badge">V1.0</span></div><p class="ri-desc">A genuine, live threat requiring investigation or response. <strong>Active / high confidence</strong> → escalate immediately.</p></div>
+                <a href="https://www.youtube.com/@bloo" target="_blank" rel="noopener noreferrer" class="play-btn" aria-label="Watch"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></a>
+              </div>
+              <div class="ri">
+                <div class="ri-body"><div class="ri-top"><span class="ri-title">Triage Verdict — Benign</span><span class="ri-badge">V1.0</span></div><p class="ri-desc">Real activity but not a threat — expected behaviour that triggered the detection. <strong>Benign or False / high confidence</strong> → close automatically.</p></div>
+                <a href="https://www.youtube.com/@bloo" target="_blank" rel="noopener noreferrer" class="play-btn" aria-label="Watch"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></a>
+              </div>
+              <div class="ri">
+                <div class="ri-body"><div class="ri-top"><span class="ri-title">Triage Verdict — False</span><span class="ri-badge">V1.0</span></div><p class="ri-desc">Detection misfired; no corresponding real-world event found. <strong>Any / low confidence</strong> → route to human review regardless of verdict.</p></div>
+                <a href="https://www.youtube.com/@bloo" target="_blank" rel="noopener noreferrer" class="play-btn" aria-label="Watch"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></a>
+              </div>
+              <div class="ri">
+                <div class="ri-body"><div class="ri-top"><span class="ri-title">Structured Output</span><span class="ri-badge">V1.0</span></div><p class="ri-desc">Every Triage Agent run produces a structured result with four fields: <strong>verdict</strong> (Active / Benign / False), <strong>confidence</strong> (0–100%), <strong>action</strong> (respond / dismiss / escalate), and <strong>reasoning</strong> (human-readable explanation of how the verdict was reached).</p></div>
+                <a href="https://www.youtube.com/@bloo" target="_blank" rel="noopener noreferrer" class="play-btn" aria-label="Watch"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></a>
+              </div>
+            </div>
+          </div>
 
-    <p class="sub-section-title" class="mt-section">Triage Verdict — every signal is assigned one of three verdicts paired with a confidence score (0–100%):</p>
-    <div class="card-grid cols-3">
-      <div class="fcard"><div class="fcard-label">Active</div><p class="fcard-desc">A genuine, live threat requiring investigation or response.</p></div>
-      <div class="fcard"><div class="fcard-label">Benign</div><p class="fcard-desc">Real activity but not a threat — expected behaviour that triggered the detection.</p></div>
-      <div class="fcard"><div class="fcard-label">False</div><p class="fcard-desc">Detection misfired; no corresponding real-world event found.</p></div>
-    </div>
+          <!-- Signal Sources -->
+          <div id="signal-sources" class="group-anchor reveal">
+            <h3 class="group-heading">Signal Source</h3>
+            <p class="group-desc">Single source, single tenant signal ingestion via Bloo Vantage, configured in two steps from the Crucible UI. Credentials are sealed in Vault and never exposed after initial save.</p>
+            <div class="items-list">
+              <div class="ri">
+                <div class="ri-body"><div class="ri-top"><span class="ri-title">Connection Configuration</span><span class="ri-badge">V1.0</span></div><p class="ri-desc">Configure: <strong>Base URL</strong> (Vantage endpoint), <strong>Cluster / Tenant</strong> (inherited from onboarding), <strong>Stream</strong> (set to SIGNALS), <strong>Poll Interval</strong> (default 30s), and <strong>Credentials</strong> (Bearer Token sealed in Vault — never displayed after save).</p></div>
+                <a href="https://www.youtube.com/@bloo" target="_blank" rel="noopener noreferrer" class="play-btn" aria-label="Watch"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></a>
+              </div>
+              <div class="ri">
+                <div class="ri-body"><div class="ri-top"><span class="ri-title">Field Mapping</span><span class="ri-badge">V1.0</span></div><p class="ri-desc">Raw Vantage source fields are mapped to Crucible's 10 canonical signal fields via a point-and-click UI with live sample values: <span class="mono">$DetectionName → detection_name</span>, <span class="mono">$SuspectHost → suspect_host</span>, <span class="mono">$DetectionTactic → detection_tactic</span>, + 7 more. Mappings saved per source; take effect on the next poll cycle.</p></div>
+                <a href="https://www.youtube.com/@bloo" target="_blank" rel="noopener noreferrer" class="play-btn" aria-label="Watch"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></a>
+              </div>
+            </div>
+          </div>
 
-    <p class="sub-section-title" class="mt-section">Confidence-driven routing:</p>
-    <ul class="bullet-list" class="mb-section">
-      <li><strong>Active / high confidence</strong> — escalate immediately</li>
-      <li><strong>Benign or False / high confidence</strong> — close automatically</li>
-      <li><strong>Any / low confidence</strong> — route to human review regardless of verdict</li>
-    </ul>
+          <!-- Integrations -->
+          <div id="integrations" class="group-anchor reveal">
+            <h3 class="group-heading">Integrations</h3>
+            <p class="group-desc">Crucible ships with <strong>1,200+ pre-built adapters</strong> across 15+ categories. The pipeline routes each investigation step to the right adapter automatically with no routing configuration required. All credentials are sealed in the customer's chosen enterprise vault.</p>
+            <div class="items-list">
+              <div class="ri">
+                <div class="ri-body"><div class="ri-top"><span class="ri-title">Threat Intelligence</span><span class="ri-badge">V1.0</span></div><p class="ri-desc">400+ adapters — VirusTotal, Recorded Future, AbuseIPDB, AlienVault OTX, GreyNoise, MITRE ATT&amp;CK.</p></div>
+                <a href="https://www.youtube.com/@bloo" target="_blank" rel="noopener noreferrer" class="play-btn" aria-label="Watch"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></a>
+              </div>
+              <div class="ri">
+                <div class="ri-body"><div class="ri-top"><span class="ri-title">SIEM &amp; Analytics</span><span class="ri-badge">V1.0</span></div><p class="ri-desc">145+ adapters — Splunk, Microsoft Sentinel, Elastic Security, Google Chronicle, QRadar.</p></div>
+                <a href="https://www.youtube.com/@bloo" target="_blank" rel="noopener noreferrer" class="play-btn" aria-label="Watch"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></a>
+              </div>
+              <div class="ri">
+                <div class="ri-body"><div class="ri-top"><span class="ri-title">Network Security</span><span class="ri-badge">V1.0</span></div><p class="ri-desc">140+ adapters — Palo Alto Networks, Fortinet, Check Point, Cisco, Zscaler.</p></div>
+                <a href="https://www.youtube.com/@bloo" target="_blank" rel="noopener noreferrer" class="play-btn" aria-label="Watch"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></a>
+              </div>
+              <div class="ri">
+                <div class="ri-body"><div class="ri-top"><span class="ri-title">Endpoint &amp; EDR</span><span class="ri-badge">V1.0</span></div><p class="ri-desc">80+ adapters — CrowdStrike Falcon, Microsoft Defender, SentinelOne, Cortex XDR.</p></div>
+                <a href="https://www.youtube.com/@bloo" target="_blank" rel="noopener noreferrer" class="play-btn" aria-label="Watch"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></a>
+              </div>
+              <div class="ri">
+                <div class="ri-body"><div class="ri-top"><span class="ri-title">Cloud Platforms</span><span class="ri-badge">V1.0</span></div><p class="ri-desc">85+ adapters — AWS CloudTrail, Azure Activity Logs, GCP Audit Logs, cloud control planes.</p></div>
+                <a href="https://www.youtube.com/@bloo" target="_blank" rel="noopener noreferrer" class="play-btn" aria-label="Watch"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></a>
+              </div>
+              <div class="ri">
+                <div class="ri-body"><div class="ri-top"><span class="ri-title">Identity &amp; Access</span><span class="ri-badge">V1.0</span></div><p class="ri-desc">55+ adapters — Okta, Azure Entra ID, Active Directory, CyberArk PAM.</p></div>
+                <a href="https://www.youtube.com/@bloo" target="_blank" rel="noopener noreferrer" class="play-btn" aria-label="Watch"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></a>
+              </div>
+              <div class="ri">
+                <div class="ri-body"><div class="ri-top"><span class="ri-title">Email Security</span><span class="ri-badge">V1.0</span></div><p class="ri-desc">35+ adapters — Proofpoint, Abnormal Security, Mimecast, Exchange / O365.</p></div>
+                <a href="https://www.youtube.com/@bloo" target="_blank" rel="noopener noreferrer" class="play-btn" aria-label="Watch"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></a>
+              </div>
+              <div class="ri">
+                <div class="ri-body"><div class="ri-top"><span class="ri-title">Forensics &amp; Malware</span><span class="ri-badge">V1.0</span></div><p class="ri-desc">40+ adapters — sandbox detonation, malware analysis, forensic tooling.</p></div>
+                <a href="https://www.youtube.com/@bloo" target="_blank" rel="noopener noreferrer" class="play-btn" aria-label="Watch"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></a>
+              </div>
+            </div>
+          </div>
 
-    <p class="sub-section-title" class="mt-section">Structured Output — every Triage Agent run produces a structured result with four fields:</p>
-    <div class="card-grid">
-      <div class="fcard"><div class="fcard-label">verdict</div><p class="fcard-desc">Active / Benign / False — the primary threat classification.</p></div>
-      <div class="fcard"><div class="fcard-label">confidence</div><p class="fcard-desc">0–100% — how consistently evidence supports the verdict.</p></div>
-      <div class="fcard"><div class="fcard-label">action</div><p class="fcard-desc">respond / dismiss / escalate — what the pipeline does next.</p></div>
-      <div class="fcard"><div class="fcard-label">reasoning</div><p class="fcard-desc">Human-readable explanation of how the verdict was reached.</p></div>
-    </div>
-  </div>
+          <!-- Human Escalation -->
+          <div id="escalation" class="group-anchor reveal">
+            <h3 class="group-heading">Human Escalation</h3>
+            <p class="group-desc">When a signal requires human judgment, a structured escalation email is sent to a configured analyst distribution list or on-call address. Analysts can act directly from their inbox without navigating the platform.</p>
+            <div class="items-list">
+              <div class="ri">
+                <div class="ri-body"><div class="ri-top"><span class="ri-title">Escalation Email Contents</span><span class="ri-badge">V1.0</span></div><p class="ri-desc">Signal summary and detection context · Triage verdict and confidence score · Top evidence highlights from the investigation · One-click deep link to the full Signal Execution View in Crucible. Escalation decisions — approved, rejected, or re-investigated — are captured and attributed in the audit trail.</p></div>
+                <a href="https://www.youtube.com/@bloo" target="_blank" rel="noopener noreferrer" class="play-btn" aria-label="Watch"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></a>
+              </div>
+            </div>
+          </div>
 
-  <!-- Signal Sources -->
-  <div id="signal-sources" class="group-anchor reveal">
-    <h3 class="group-heading">Signal Source</h3>
-    <p class="group-desc">Single source, single tenant signal ingestion via Bloo Vantage, configured in two steps from the Crucible UI. Credentials are sealed in Vault and never exposed after initial save.</p>
+          <!-- Playbooks -->
+          <div id="playbooks" class="group-anchor reveal">
+            <h3 class="group-heading">Playbooks</h3>
+            <p class="group-desc">Every incoming signal is automatically matched to an investigation playbook — no manual selection required.</p>
+            <div class="items-list">
+              <div class="ri">
+                <div class="ri-body"><div class="ri-top"><span class="ri-title">Step Type — query</span><span class="ri-badge">V1.0</span></div><p class="ri-desc">Fetch evidence from a connected integration — logs, alerts, events, indicators.</p></div>
+                <a href="https://www.youtube.com/@bloo" target="_blank" rel="noopener noreferrer" class="play-btn" aria-label="Watch"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></a>
+              </div>
+              <div class="ri">
+                <div class="ri-body"><div class="ri-top"><span class="ri-title">Step Type — enrich</span><span class="ri-badge">V1.0</span></div><p class="ri-desc">Augment IOCs with threat intelligence — reputation, geolocation, sandbox verdicts.</p></div>
+                <a href="https://www.youtube.com/@bloo" target="_blank" rel="noopener noreferrer" class="play-btn" aria-label="Watch"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></a>
+              </div>
+              <div class="ri">
+                <div class="ri-body"><div class="ri-top"><span class="ri-title">Step Type — triage</span><span class="ri-badge">V1.0</span></div><p class="ri-desc">Run specialist Investigation Agents over accumulated evidence; aggregate into a confidence-weighted threat score.</p></div>
+                <a href="https://www.youtube.com/@bloo" target="_blank" rel="noopener noreferrer" class="play-btn" aria-label="Watch"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></a>
+              </div>
+              <div class="ri">
+                <div class="ri-body"><div class="ri-top"><span class="ri-title">Step Type — respond</span><span class="ri-badge">V1.0</span></div><p class="ri-desc">Execute a response action against an external system via a configured integration.</p></div>
+                <a href="https://www.youtube.com/@bloo" target="_blank" rel="noopener noreferrer" class="play-btn" aria-label="Watch"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></a>
+              </div>
+              <div class="ri">
+                <div class="ri-body"><div class="ri-top"><span class="ri-title">Lifecycle — Unpublished / Published</span><span class="ri-badge">V1.0</span></div><p class="ri-desc"><strong>Unpublished</strong>: newly created, not yet active against live signals. <strong>Published</strong>: the active version currently running against incoming signals.</p></div>
+                <a href="https://www.youtube.com/@bloo" target="_blank" rel="noopener noreferrer" class="play-btn" aria-label="Watch"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></a>
+              </div>
+              <div class="ri">
+                <div class="ri-body"><div class="ri-top"><span class="ri-title">Lifecycle — Draft / Retired</span><span class="ri-badge">V1.0</span></div><p class="ri-desc"><strong>Draft</strong>: a pending edit on a live playbook — does not go active until explicitly published. <strong>Retired</strong>: soft-deleted; no longer matched to signals. Full version history and rollback retained.</p></div>
+                <a href="https://www.youtube.com/@bloo" target="_blank" rel="noopener noreferrer" class="play-btn" aria-label="Watch"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></a>
+              </div>
+            </div>
+          </div>
 
-    <p class="sub-section-title" class="mt-section">Connection Configuration:</p>
-    <div class="card-grid">
-      <div class="fcard"><div class="fcard-label">Base URL</div><p class="fcard-desc">Bloo Vantage instance endpoint for this tenant.</p></div>
-      <div class="fcard"><div class="fcard-label">Cluster / Tenant</div><p class="fcard-desc">Tenant cluster identifier — inherited from Vantage onboarding.</p></div>
-      <div class="fcard"><div class="fcard-label">Stream</div><p class="fcard-desc">Data stream to poll — set to <strong>SIGNALS</strong> for security alert ingestion.</p></div>
-      <div class="fcard"><div class="fcard-label">Poll Interval</div><p class="fcard-desc">How often Crucible polls for new signals (default: 30 seconds).</p></div>
-      <div class="fcard"><div class="fcard-label">Credentials</div><p class="fcard-desc">Bearer Token sealed in Vault — never displayed after initial save. Rotate Token available from the UI.</p></div>
-    </div>
+          <!-- Multi-LLM -->
+          <div id="multi-llm" class="group-anchor reveal">
+            <h3 class="group-heading">Multi-LLM Provider Support</h3>
+            <p class="group-desc">Crucible is not locked to any single AI provider. Different pipeline stages can use different providers and models independently — switching requires only a configuration update with no pipeline code changes.</p>
+            <div class="items-list">
+              <div class="ri">
+                <div class="ri-body"><div class="ri-top"><span class="ri-title">Anthropic Claude</span><span class="ri-badge">V1.0</span></div><p class="ri-desc">Complex multi-step investigation reasoning; recommended for deep analysis and triage stages.</p></div>
+                <a href="https://www.youtube.com/@bloo" target="_blank" rel="noopener noreferrer" class="play-btn" aria-label="Watch"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></a>
+              </div>
+              <div class="ri">
+                <div class="ri-body"><div class="ri-top"><span class="ri-title">AWS Bedrock</span><span class="ri-badge">V1.0</span></div><p class="ri-desc">AWS-resident deployments; satisfies existing AWS data residency commitments.</p></div>
+                <a href="https://www.youtube.com/@bloo" target="_blank" rel="noopener noreferrer" class="play-btn" aria-label="Watch"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></a>
+              </div>
+              <div class="ri">
+                <div class="ri-body"><div class="ri-top"><span class="ri-title">Google Gemini</span><span class="ri-badge">V1.0</span></div><p class="ri-desc">Google Cloud-aligned enterprise deployments.</p></div>
+                <a href="https://www.youtube.com/@bloo" target="_blank" rel="noopener noreferrer" class="play-btn" aria-label="Watch"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></a>
+              </div>
+              <div class="ri">
+                <div class="ri-body"><div class="ri-top"><span class="ri-title">OpenAI</span><span class="ri-badge">V1.0</span></div><p class="ri-desc">Broad enterprise familiarity; wide model selection across capability tiers.</p></div>
+                <a href="https://www.youtube.com/@bloo" target="_blank" rel="noopener noreferrer" class="play-btn" aria-label="Watch"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></a>
+              </div>
+              <div class="ri">
+                <div class="ri-body"><div class="ri-top"><span class="ri-title">Ollama</span><span class="ri-badge">V1.0</span></div><p class="ri-desc">Self-hosted, air-gapped, or data-sovereignty-constrained environments; no external API calls.</p></div>
+                <a href="https://www.youtube.com/@bloo" target="_blank" rel="noopener noreferrer" class="play-btn" aria-label="Watch"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></a>
+              </div>
+            </div>
+          </div>
 
-    <p class="sub-section-title" class="mt-section">Field Mapping — raw Vantage fields mapped to Crucible's 10 canonical signal fields:</p>
-    <div class="card-grid">
-      <div class="fcard"><div class="fcard-label">$DetectionName</div><p class="fcard-desc">→ detection_name</p></div>
-      <div class="fcard"><div class="fcard-label">$SuspectHost</div><p class="fcard-desc">→ suspect_host</p></div>
-      <div class="fcard"><div class="fcard-label">$DetectionTactic</div><p class="fcard-desc">→ detection_tactic</p></div>
-      <div class="fcard"><div class="fcard-label">+ 7 more fields</div><p class="fcard-desc">Mappings saved per source; take effect on the next poll cycle.</p></div>
-    </div>
-  </div>
-
-  <!-- Integrations -->
-  <div id="integrations" class="group-anchor reveal">
-    <h3 class="group-heading">Integrations</h3>
-    <p class="group-desc">Crucible ships with <strong>1,200+ pre-built adapters</strong> across 15+ categories. The pipeline routes each investigation step to the right adapter automatically with no routing configuration required. All credentials are sealed in the customer's chosen enterprise vault.</p>
-    <div class="card-grid">
-      <div class="fcard"><div class="fcard-label">Threat Intelligence</div><p class="fcard-desc">400+ adapters — VirusTotal, Recorded Future, AbuseIPDB, AlienVault OTX, GreyNoise, MITRE ATT&amp;CK.</p></div>
-      <div class="fcard"><div class="fcard-label">SIEM &amp; Analytics</div><p class="fcard-desc">145+ adapters — Splunk, Microsoft Sentinel, Elastic Security, Google Chronicle, QRadar.</p></div>
-      <div class="fcard"><div class="fcard-label">Network Security</div><p class="fcard-desc">140+ adapters — Palo Alto Networks, Fortinet, Check Point, Cisco, Zscaler.</p></div>
-      <div class="fcard"><div class="fcard-label">Endpoint &amp; EDR</div><p class="fcard-desc">80+ adapters — CrowdStrike Falcon, Microsoft Defender, SentinelOne, Cortex XDR.</p></div>
-      <div class="fcard"><div class="fcard-label">Cloud Platforms</div><p class="fcard-desc">85+ adapters — AWS CloudTrail, Azure Activity Logs, GCP Audit Logs, cloud control planes.</p></div>
-      <div class="fcard"><div class="fcard-label">Identity &amp; Access</div><p class="fcard-desc">55+ adapters — Okta, Azure Entra ID, Active Directory, CyberArk PAM.</p></div>
-      <div class="fcard"><div class="fcard-label">Email Security</div><p class="fcard-desc">35+ adapters — Proofpoint, Abnormal Security, Mimecast, Exchange / O365.</p></div>
-      <div class="fcard"><div class="fcard-label">Forensics &amp; Malware</div><p class="fcard-desc">40+ adapters — sandbox detonation, malware analysis, forensic tooling.</p></div>
-    </div>
-  </div>
-
-  <!-- Human Escalation -->
-  <div id="escalation" class="group-anchor reveal">
-    <h3 class="group-heading">Human Escalation</h3>
-    <p class="group-desc">When a signal requires human judgment, a structured escalation email is sent to a configured analyst distribution list or on-call address. Analysts can act directly from their inbox without navigating the platform.</p>
-    <p class="sub-section-title" class="mt-section">Escalation Email — Contents:</p>
-    <ul class="bullet-list">
-      <li>Signal summary and detection context</li>
-      <li>Triage verdict and confidence score</li>
-      <li>Top evidence highlights from the investigation</li>
-      <li>One-click deep link to the full Signal Execution View in Crucible</li>
-    </ul>
-    <p class="group-desc italic-note">Escalation decisions — approved, rejected, or re-investigated — are captured and attributed in the audit trail.</p>
-  </div>
-
-  <!-- Playbooks -->
-  <div id="playbooks" class="group-anchor reveal">
-    <h3 class="group-heading">Playbooks</h3>
-    <p class="group-desc">Every incoming signal is automatically matched to an investigation playbook — no manual selection required.</p>
-
-    <p class="sub-section-title" class="mt-section">Playbook Step Types — five step types define what each playbook step does:</p>
-    <div class="card-grid">
-      <div class="fcard"><div class="fcard-label">query</div><p class="fcard-desc">Fetch evidence from a connected integration — logs, alerts, events, indicators.</p></div>
-      <div class="fcard"><div class="fcard-label">enrich</div><p class="fcard-desc">Augment IOCs with threat intelligence — reputation, geolocation, sandbox verdicts.</p></div>
-      <div class="fcard"><div class="fcard-label">triage</div><p class="fcard-desc">Run specialist Investigation Agents over accumulated evidence; aggregate into a confidence-weighted threat score.</p></div>
-      <div class="fcard"><div class="fcard-label">respond</div><p class="fcard-desc">Execute a response action against an external system via a configured integration.</p></div>
-    </div>
-
-    <p class="sub-section-title" class="mt-section">Playbook Lifecycle — playbooks follow a controlled four-state lifecycle:</p>
-    <div class="card-grid">
-      <div class="fcard"><div class="fcard-label">Unpublished</div><p class="fcard-desc">Newly created — not yet active against live signals.</p></div>
-      <div class="fcard"><div class="fcard-label">Published</div><p class="fcard-desc">The active version currently running against incoming signals.</p></div>
-      <div class="fcard"><div class="fcard-label">Draft</div><p class="fcard-desc">A pending edit on a live playbook — does not go active until explicitly published.</p></div>
-      <div class="fcard"><div class="fcard-label">Retired</div><p class="fcard-desc">Soft-deleted; no longer matched to signals. Full version history and rollback retained.</p></div>
-    </div>
-  </div>
-
-  <!-- Multi-LLM -->
-  <div id="multi-llm" class="group-anchor reveal">
-    <h3 class="group-heading">Multi-LLM Provider Support</h3>
-    <p class="group-desc">Crucible is not locked to any single AI provider. Different pipeline stages can use different providers and models independently — switching requires only a configuration update with no pipeline code changes.</p>
-    <div class="card-grid">
-      <div class="fcard"><div class="fcard-label">Anthropic Claude</div><p class="fcard-desc">Complex multi-step investigation reasoning; recommended for deep analysis and triage stages.</p></div>
-      <div class="fcard"><div class="fcard-label">AWS Bedrock</div><p class="fcard-desc">AWS-resident deployments; satisfies existing AWS data residency commitments.</p></div>
-      <div class="fcard"><div class="fcard-label">Google Gemini</div><p class="fcard-desc">Google Cloud-aligned enterprise deployments.</p></div>
-      <div class="fcard"><div class="fcard-label">OpenAI</div><p class="fcard-desc">Broad enterprise familiarity; wide model selection across capability tiers.</p></div>
-      <div class="fcard"><div class="fcard-label">Ollama</div><p class="fcard-desc">Self-hosted, air-gapped, or data-sovereignty-constrained environments; no external API calls.</p></div>
-    </div>
-  </div>
-
-  <!-- Authentication -->
-  <div id="auth" class="group-anchor reveal">
-    <h3 class="group-heading">Authentication &amp; Session Management</h3>
-    <p class="group-desc">Every platform interaction is identity-bound, tenant-scoped, and fully attributable. All pipeline operations require an authenticated session; unauthenticated requests are rejected at the gateway before any investigation or LLM call is initiated.</p>
-    <div class="card-grid">
-      <div class="fcard"><div class="fcard-label">OAuth 2.0 with PKCE</div><p class="fcard-desc">Federated sign-in via Google as the identity provider. Users authenticate through their existing Google account with no password stored on the platform. PKCE is enforced throughout to protect the authorisation flow against interception.</p></div>
-      <div class="fcard"><div class="fcard-label">Email &amp; Password</div><p class="fcard-desc">Available to users provisioned through Bloo Vantage tenant onboarding. Credentials are managed within the Bloo Vantage identity layer; Crucible inherits the authenticated session on successful sign-in.</p></div>
-    </div>
-  </div>
+          <!-- Authentication -->
+          <div id="auth" class="group-anchor reveal">
+            <h3 class="group-heading">Authentication &amp; Session Management</h3>
+            <p class="group-desc">Every platform interaction is identity-bound, tenant-scoped, and fully attributable. All pipeline operations require an authenticated session; unauthenticated requests are rejected at the gateway before any investigation or LLM call is initiated.</p>
+            <div class="items-list">
+              <div class="ri">
+                <div class="ri-body"><div class="ri-top"><span class="ri-title">OAuth 2.0 with PKCE</span><span class="ri-badge">V1.0</span></div><p class="ri-desc">Federated sign-in via Google as the identity provider. Users authenticate through their existing Google account with no password stored on the platform. PKCE is enforced throughout to protect the authorisation flow against interception.</p></div>
+                <a href="https://www.youtube.com/@bloo" target="_blank" rel="noopener noreferrer" class="play-btn" aria-label="Watch"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></a>
+              </div>
+              <div class="ri">
+                <div class="ri-body"><div class="ri-top"><span class="ri-title">Email &amp; Password</span><span class="ri-badge">V1.0</span></div><p class="ri-desc">Available to users provisioned through Bloo Vantage tenant onboarding. Credentials are managed within the Bloo Vantage identity layer; Crucible inherits the authenticated session on successful sign-in.</p></div>
+                <a href="https://www.youtube.com/@bloo" target="_blank" rel="noopener noreferrer" class="play-btn" aria-label="Watch"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></a>
+              </div>
+            </div>
+          </div>
 
         </div>
       </div>

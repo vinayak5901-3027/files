@@ -467,18 +467,40 @@
     .sub-section-title { font-size: .875rem; font-weight: 700; color: var(--text); margin-bottom: .5rem; }
     .sub-section-desc { font-size: .875rem; color: var(--text-sub); margin-bottom: .75rem; }
 
-    /* Feature card grid (replaces data-tables) */
-    .card-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin: 1rem 0; }
-    .card-grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
-    .fcard { background: #f8fafc; border: 1px solid var(--border); border-radius: 10px; padding: 1.125rem 1.25rem; }
-    .fcard-label { font-size: .6875rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--secondary); margin-bottom: .5rem; font-family: 'Courier New', monospace; }
-    .fcard-title { font-size: .9375rem; font-weight: 700; color: var(--text); margin-bottom: .375rem; }
-    .fcard-desc { font-size: .875rem; color: var(--text-sub); line-height: 1.6; }
-    .bullet-list { list-style: none; padding: 0; margin: .75rem 0; }
-    .bullet-list li { font-size: .875rem; color: var(--text-sub); padding: .3rem 0 .3rem 1.25rem; position: relative; line-height: 1.55; }
+    /* ── Card grid — Bloo platform overview style ─────────────── */
+    .card-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin: 1.25rem 0; }
+    .card-grid.cols-2 { grid-template-columns: repeat(2, 1fr); }
+    .card-grid.cols-4 { grid-template-columns: repeat(4, 1fr); }
+    .fcard {
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 1.25rem 1.375rem 1.375rem;
+      display: flex; flex-direction: column; gap: .625rem;
+    }
+    .fcard-intro {
+      background: #edf3ee;
+      border: 1px solid #d4e4d6;
+    }
+    /* Card header: logo + divider + category */
+    .fcard-hdr { display: flex; align-items: center; gap: .5rem; margin-bottom: .125rem; }
+    .fcard-logo { height: 22px; width: auto; display: block; }
+    .fcard-hdiv { width: 1px; height: 13px; background: #c8ced6; flex-shrink: 0; }
+    .fcard-cat {
+      font-size: .6rem; font-weight: 700; letter-spacing: .11em;
+      text-transform: uppercase; color: #8a96a3; line-height: 1;
+    }
+    .fcard-title { font-size: .9375rem; font-weight: 700; color: var(--text); line-height: 1.3; }
+    .fcard-intro-title { font-size: 1rem; font-weight: 700; color: var(--text); line-height: 1.3; }
+    .fcard-desc { font-size: .875rem; color: #4b5563; line-height: 1.65; margin: 0; }
+    .bullet-list { list-style: none; padding: 0; margin: .25rem 0 0; }
+    .bullet-list li { font-size: .875rem; color: #4b5563; padding: .25rem 0 .25rem 1.25rem; position: relative; line-height: 1.55; }
     .bullet-list li::before { content: '–'; position: absolute; left: 0; color: var(--secondary); font-weight: 700; }
     .bullet-list li strong { color: var(--text); }
-    @media (max-width: 639px) { .card-grid, .card-grid.cols-3 { grid-template-columns: 1fr; } }
+    .sub-section-title { font-size: .8125rem; font-weight: 700; color: var(--text-muted); letter-spacing: .04em; margin: 1.5rem 0 .625rem; text-transform: uppercase; }
+    /* Responsive */
+    @media (max-width: 1023px) { .card-grid { grid-template-columns: repeat(2, 1fr); } .card-grid.cols-2 { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 599px) { .card-grid, .card-grid.cols-2, .card-grid.cols-4 { grid-template-columns: 1fr; } }
 
     /* ═══════════════════════════════════════════════════════════
        HAMBURGER MENU (mobile)
@@ -751,90 +773,121 @@
 
         <div class="feature-groups">
 
-  <!-- Pipeline -->
-  <div id="pipeline" class="group-anchor reveal">
-    <h3 class="group-heading">Pipeline Factory — 5-Stage Query Intelligence Pipeline</h3>
-    <p class="group-desc">The core execution engine of SynthAI. Every natural-language question flows through five deterministic, observable stages. Live progress events are emitted over WebSocket at each stage transition. Sub-queries execute in parallel across DataFabric streams.</p>
-    <div class="card-grid">
-      <div class="fcard"><div class="fcard-label">Stage 1</div><div class="fcard-title">Decomposer</div><p class="fcard-desc">Breaks the natural-language question into independent sub-questions, each mapped to a specific DataFabric stream or log source with a defined time range and a set of candidate fields.</p></div>
-      <div class="fcard"><div class="fcard-label">Stage 2</div><div class="fcard-title">Query Generator</div><p class="fcard-desc">Converts each sub-question into validated SQL. A guardrails layer enforces safe query patterns — blocking DDL statements, unbounded time scans, and cross-scope joins — before any query reaches the data platform.</p></div>
-      <div class="fcard"><div class="fcard-label">Stage 3</div><div class="fcard-title">Executor</div><p class="fcard-desc">Runs all validated sub-queries in parallel via the DataFabric API, each scoped to the tenant's Scope. The DataFabric platform enforces data isolation independently at this layer as a second enforcement point.</p></div>
-      <div class="fcard"><div class="fcard-label">Stage 4</div><div class="fcard-title">Analyser</div><p class="fcard-desc">Analyses each result set independently — extracting key findings and flagging notable values. Per-stream severity ratings are assigned.</p></div>
-      <div class="fcard"><div class="fcard-label">Stage 5</div><div class="fcard-title">Synthesizer</div><p class="fcard-desc">Synthesizes all stream analyses into a single structured response streamed to the UI — including a direct answer, source-attributed evidence cards, confidence rating with chain-of-thought reasoning, severity assessment, suggested next steps, and exact SQL executed for each sub-query.</p></div>
-    </div>
-  </div>
+          <!-- Pipeline -->
+          <div id="pipeline" class="group-anchor reveal">
+            <h3 class="group-heading">Pipeline Factory — 5-Stage Query Intelligence Pipeline</h3>
+            <p class="group-desc">The core execution engine of SynthAI. Every natural-language question flows through five deterministic, observable stages. Live progress events are emitted over WebSocket at each stage transition. Sub-queries execute in parallel across DataFabric streams.</p>
+            <div class="items-list">
+              <div class="ri">
+                <div class="ri-body"><div class="ri-top"><span class="ri-title">Stage 1 — Decomposer</span><span class="ri-badge">V1.0</span></div><p class="ri-desc">Breaks the natural-language question into independent sub-questions, each mapped to a specific DataFabric stream or log source with a defined time range and a set of candidate fields.</p></div>
+                <a href="https://www.youtube.com/@bloo" target="_blank" rel="noopener noreferrer" class="play-btn" aria-label="Watch"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></a>
+              </div>
+              <div class="ri">
+                <div class="ri-body"><div class="ri-top"><span class="ri-title">Stage 2 — Query Generator</span><span class="ri-badge">V1.0</span></div><p class="ri-desc">Converts each sub-question into validated SQL. A guardrails layer enforces safe query patterns — blocking DDL statements, unbounded time scans, and cross-scope joins — before any query reaches the data platform.</p></div>
+                <a href="https://www.youtube.com/@bloo" target="_blank" rel="noopener noreferrer" class="play-btn" aria-label="Watch"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></a>
+              </div>
+              <div class="ri">
+                <div class="ri-body"><div class="ri-top"><span class="ri-title">Stage 3 — Executor</span><span class="ri-badge">V1.0</span></div><p class="ri-desc">Runs all validated sub-queries in parallel via the DataFabric API, each scoped to the tenant's Scope. The DataFabric platform enforces data isolation independently at this layer as a second enforcement point.</p></div>
+                <a href="https://www.youtube.com/@bloo" target="_blank" rel="noopener noreferrer" class="play-btn" aria-label="Watch"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></a>
+              </div>
+              <div class="ri">
+                <div class="ri-body"><div class="ri-top"><span class="ri-title">Stage 4 — Analyser</span><span class="ri-badge">V1.0</span></div><p class="ri-desc">Analyses each result set independently — extracting key findings and flagging notable values. Per-stream severity ratings are assigned.</p></div>
+                <a href="https://www.youtube.com/@bloo" target="_blank" rel="noopener noreferrer" class="play-btn" aria-label="Watch"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></a>
+              </div>
+              <div class="ri">
+                <div class="ri-body"><div class="ri-top"><span class="ri-title">Stage 5 — Synthesizer</span><span class="ri-badge">V1.0</span></div><p class="ri-desc">Synthesizes all stream analyses into a single structured response streamed to the UI — including a direct answer, source-attributed evidence cards, confidence rating with chain-of-thought reasoning, severity assessment, suggested next steps, and exact SQL executed for each sub-query.</p></div>
+                <a href="https://www.youtube.com/@bloo" target="_blank" rel="noopener noreferrer" class="play-btn" aria-label="Watch"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></a>
+              </div>
+            </div>
+          </div>
 
-  <!-- Recommendation Control -->
-  <div id="recommendations" class="group-anchor reveal">
-    <h3 class="group-heading">Recommendation Control</h3>
-    <p class="group-desc">Users can toggle the <strong>Recommendations</strong> section of any pipeline response on or off per session.</p>
-    <div class="card-grid">
-      <div class="fcard"><div class="fcard-label">Enabled</div><p class="fcard-desc">Synthesizer includes a recommendations block; follow-up investigation tasks may be spawned from the response.</p></div>
-      <div class="fcard"><div class="fcard-label">Disabled</div><p class="fcard-desc">Recommendations block omitted entirely; no follow-up tasks are spawned. Toggle state is preserved per session.</p></div>
-    </div>
-  </div>
+          <!-- Recommendation Control -->
+          <div id="recommendations" class="group-anchor reveal">
+            <h3 class="group-heading">Recommendation Control</h3>
+            <p class="group-desc">Users can toggle the <strong>Recommendations</strong> section of any pipeline response on or off per session.</p>
+            <div class="items-list">
+              <div class="ri">
+                <div class="ri-body"><div class="ri-top"><span class="ri-title">Enabled</span><span class="ri-badge">V1.0</span></div><p class="ri-desc">Synthesizer includes a recommendations block; follow-up investigation tasks may be spawned from the response.</p></div>
+                <a href="https://www.youtube.com/@bloo" target="_blank" rel="noopener noreferrer" class="play-btn" aria-label="Watch"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></a>
+              </div>
+              <div class="ri">
+                <div class="ri-body"><div class="ri-top"><span class="ri-title">Disabled</span><span class="ri-badge">V1.0</span></div><p class="ri-desc">Recommendations block omitted entirely; no follow-up tasks are spawned. Toggle state is preserved per session.</p></div>
+                <a href="https://www.youtube.com/@bloo" target="_blank" rel="noopener noreferrer" class="play-btn" aria-label="Watch"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></a>
+              </div>
+            </div>
+          </div>
 
-  <!-- Token Usage -->
-  <div id="token-usage" class="group-anchor reveal">
-    <h3 class="group-heading">Token &amp; Usage Display</h3>
-    <p class="group-desc">Every LLM call across all five pipeline stages is logged in real time. Live usage events are pushed to the browser as each stage completes — costs update while the pipeline runs, not as a post-hoc summary.</p>
-  </div>
+          <!-- Token Usage -->
+          <div id="token-usage" class="group-anchor reveal">
+            <h3 class="group-heading">Token &amp; Usage Display</h3>
+            <p class="group-desc">Every LLM call across all five pipeline stages is logged in real time. Live usage events are pushed to the browser as each stage completes — costs update while the pipeline runs, not as a post-hoc summary.</p>
+            <div class="items-list">
+              <div class="ri">
+                <div class="ri-body"><div class="ri-top"><span class="ri-title">Real-Time Cost Tracking</span><span class="ri-badge">V1.0</span></div><p class="ri-desc">Live usage events are pushed to the browser as each stage completes — provider, model, input tokens, output tokens, estimated cost, and latency — updated while the pipeline runs, not as a post-hoc summary.</p></div>
+                <a href="https://www.youtube.com/@bloo" target="_blank" rel="noopener noreferrer" class="play-btn" aria-label="Watch"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></a>
+              </div>
+            </div>
+          </div>
 
-  <!-- Authentication -->
-  <div id="auth" class="group-anchor reveal">
-    <h3 class="group-heading">Authentication &amp; Session Management</h3>
-    <p class="group-desc">Every query is identity-bound and tenant-scoped. Sessions use short-lived access tokens refreshed transparently — unauthenticated requests are rejected at the gateway before any data or LLM call is made. Every pipeline execution is attributed to a specific authenticated identity in the audit record.</p>
-    <div class="card-grid">
-      <div class="fcard"><div class="fcard-label">OAuth 2.0</div><p class="fcard-desc">Federated sign-in via Google as the identity provider. Users authenticate through their existing Google account with no password stored on the platform.</p></div>
-      <div class="fcard"><div class="fcard-label">Email &amp; Password</div><p class="fcard-desc">Available to users provisioned through Bloo DataFabric tenant onboarding. Credentials are managed within the Bloo DataFabric identity layer; SynthAI inherits the authenticated session on successful sign-in.</p></div>
-    </div>
-  </div>
+          <!-- Authentication -->
+          <div id="auth" class="group-anchor reveal">
+            <h3 class="group-heading">Authentication &amp; Session Management</h3>
+            <p class="group-desc">Every query is identity-bound and tenant-scoped. Sessions use short-lived access tokens refreshed transparently — unauthenticated requests are rejected at the gateway before any data or LLM call is made. Every pipeline execution is attributed to a specific authenticated identity in the audit record.</p>
+            <div class="items-list">
+              <div class="ri">
+                <div class="ri-body"><div class="ri-top"><span class="ri-title">OAuth 2.0</span><span class="ri-badge">V1.0</span></div><p class="ri-desc">Federated sign-in via Google as the identity provider. Users authenticate through their existing Google account with no password stored on the platform.</p></div>
+                <a href="https://www.youtube.com/@bloo" target="_blank" rel="noopener noreferrer" class="play-btn" aria-label="Watch"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></a>
+              </div>
+              <div class="ri">
+                <div class="ri-body"><div class="ri-top"><span class="ri-title">Email &amp; Password</span><span class="ri-badge">V1.0</span></div><p class="ri-desc">Available to users provisioned through Bloo DataFabric tenant onboarding. Credentials are managed within the Bloo DataFabric identity layer; SynthAI inherits the authenticated session on successful sign-in.</p></div>
+                <a href="https://www.youtube.com/@bloo" target="_blank" rel="noopener noreferrer" class="play-btn" aria-label="Watch"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></a>
+              </div>
+            </div>
+          </div>
 
-  <!-- LLM Licence Management -->
-  <div id="llm-licence" class="group-anchor reveal">
-    <h3 class="group-heading">LLM Licence Management</h3>
-    <p class="group-desc">Self-service LLM connection management — organisations register, validate, and manage their own provider credentials without routing any key through the application database.</p>
-    <div class="card-grid cols-3">
-      <div class="fcard">
-        <div class="fcard-title">Connection Validation</div>
-        <ul class="bullet-list">
-          <li>Every saved connection is immediately test-fired against the target provider</li>
-          <li>A connection is only marked verified after a successful live test</li>
-          <li>Failed or misconfigured keys are surfaced at save time with a clear error — not silently stored</li>
-          <li>Connections can be re-tested at any time from the LLM connections UI</li>
-        </ul>
-      </div>
-      <div class="fcard">
-        <div class="fcard-title">Credential Storage</div>
-        <ul class="bullet-list">
-          <li>API keys are sealed in an enterprise-grade secrets vault at the moment of entry</li>
-          <li>Keys are never saved in the application database and cannot be read back after initial save</li>
-          <li>Only non-sensitive metadata is persisted — provider name, model, and verification status</li>
-          <li>Keys can be replaced at any time using the <strong>Rotate Key</strong> action</li>
-        </ul>
-      </div>
-      <div class="fcard">
-        <div class="fcard-title">Org-Level Isolation</div>
-        <ul class="bullet-list">
-          <li>Each LLM connection is strictly bound to a single organisation and scope</li>
-          <li>Cross-tenant access is structurally impossible — no shared credential pools</li>
-          <li>Isolation enforced simultaneously at the database row level and the secrets vault path level</li>
-        </ul>
-      </div>
-    </div>
-  </div>
+          <!-- LLM Licence Management -->
+          <div id="llm-licence" class="group-anchor reveal">
+            <h3 class="group-heading">LLM Licence Management</h3>
+            <p class="group-desc">Self-service LLM connection management — organisations register, validate, and manage their own provider credentials without routing any key through the application database.</p>
+            <div class="items-list">
+              <div class="ri">
+                <div class="ri-body"><div class="ri-top"><span class="ri-title">Connection Validation</span><span class="ri-badge">V1.0</span></div><p class="ri-desc">Every saved connection is immediately test-fired against the target provider. A connection is only marked verified after a successful live test. Failed or misconfigured keys are surfaced at save time with a clear error — not silently stored. Connections can be re-tested at any time from the LLM connections UI.</p></div>
+                <a href="https://www.youtube.com/@bloo" target="_blank" rel="noopener noreferrer" class="play-btn" aria-label="Watch"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></a>
+              </div>
+              <div class="ri">
+                <div class="ri-body"><div class="ri-top"><span class="ri-title">Credential Storage</span><span class="ri-badge">V1.0</span></div><p class="ri-desc">API keys are sealed in an enterprise-grade secrets vault at the moment of entry. Keys are never saved in the application database and cannot be read back after initial save. Only non-sensitive metadata is persisted — provider name, model, and verification status. Keys can be replaced at any time using the Rotate Key action.</p></div>
+                <a href="https://www.youtube.com/@bloo" target="_blank" rel="noopener noreferrer" class="play-btn" aria-label="Watch"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></a>
+              </div>
+              <div class="ri">
+                <div class="ri-body"><div class="ri-top"><span class="ri-title">Org-Level Isolation</span><span class="ri-badge">V1.0</span></div><p class="ri-desc">Each LLM connection is strictly bound to a single organisation and scope. Cross-tenant access is structurally impossible — no shared credential pools. Isolation enforced simultaneously at the database row level and the secrets vault path level.</p></div>
+                <a href="https://www.youtube.com/@bloo" target="_blank" rel="noopener noreferrer" class="play-btn" aria-label="Watch"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></a>
+              </div>
+            </div>
+          </div>
 
-  <!-- Multi-LLM -->
-  <div id="multi-llm" class="group-anchor reveal">
-    <h3 class="group-heading">Multi-LLM Provider Support</h3>
-    <p class="group-desc">SynthAI supports four LLM provider families out of the box. Different scopes within the same organisation can use different providers simultaneously. Switching providers requires no pipeline code changes.</p>
-    <div class="card-grid">
-      <div class="fcard"><div class="fcard-label">Anthropic</div><p class="fcard-desc">Long-context reasoning; recommended for complex multi-stream investigation questions.</p></div>
-      <div class="fcard"><div class="fcard-label">OpenAI</div><p class="fcard-desc">Broad enterprise familiarity; wide model choice across capability and cost tiers.</p></div>
-      <div class="fcard"><div class="fcard-label">AWS Bedrock</div><p class="fcard-desc">AWS-resident deployments; satisfies existing data residency and sovereignty commitments.</p></div>
-      <div class="fcard"><div class="fcard-label">Ollama</div><p class="fcard-desc">Fully self-hosted; air-gapped or data-sovereignty-constrained environments; no external API calls.</p></div>
-    </div>
-  </div>
+          <!-- Multi-LLM -->
+          <div id="multi-llm" class="group-anchor reveal">
+            <h3 class="group-heading">Multi-LLM Provider Support</h3>
+            <p class="group-desc">SynthAI supports four LLM provider families out of the box. Different scopes within the same organisation can use different providers simultaneously. Switching providers requires no pipeline code changes.</p>
+            <div class="items-list">
+              <div class="ri">
+                <div class="ri-body"><div class="ri-top"><span class="ri-title">Anthropic</span><span class="ri-badge">V1.0</span></div><p class="ri-desc">Long-context reasoning; recommended for complex multi-stream investigation questions.</p></div>
+                <a href="https://www.youtube.com/@bloo" target="_blank" rel="noopener noreferrer" class="play-btn" aria-label="Watch"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></a>
+              </div>
+              <div class="ri">
+                <div class="ri-body"><div class="ri-top"><span class="ri-title">OpenAI</span><span class="ri-badge">V1.0</span></div><p class="ri-desc">Broad enterprise familiarity; wide model choice across capability and cost tiers.</p></div>
+                <a href="https://www.youtube.com/@bloo" target="_blank" rel="noopener noreferrer" class="play-btn" aria-label="Watch"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></a>
+              </div>
+              <div class="ri">
+                <div class="ri-body"><div class="ri-top"><span class="ri-title">AWS Bedrock</span><span class="ri-badge">V1.0</span></div><p class="ri-desc">AWS-resident deployments; satisfies existing data residency and sovereignty commitments.</p></div>
+                <a href="https://www.youtube.com/@bloo" target="_blank" rel="noopener noreferrer" class="play-btn" aria-label="Watch"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></a>
+              </div>
+              <div class="ri">
+                <div class="ri-body"><div class="ri-top"><span class="ri-title">Ollama</span><span class="ri-badge">V1.0</span></div><p class="ri-desc">Fully self-hosted; air-gapped or data-sovereignty-constrained environments; no external API calls.</p></div>
+                <a href="https://www.youtube.com/@bloo" target="_blank" rel="noopener noreferrer" class="play-btn" aria-label="Watch"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></a>
+              </div>
+            </div>
+          </div>
 
         </div>
       </div>
