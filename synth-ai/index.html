@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bloo SynthAI — Release Notes v0.1</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;1,700&display=swap" rel="stylesheet" />
+  <style>
+    /* ═══════════════════════════════════════════════════════════
+       BLOO BRAND PALETTE
+       Primary   #00438D   brand blue
+       Secondary #005BC5   interactive / links
+       Accent    #FFC500   gold CTAs (use sparingly)
+       Text      #000000   body on white
+       Dark hero ~#040d1c  very dark navy (matches bloo.io site)
+    ═══════════════════════════════════════════════════════════ */
+    :root {
+      --primary:    #00438D;
+      --secondary:  #005BC5;
+      --accent:     #FFC500;
+      --text:       #000000;
+      --text-sub:   #333333;
+      --text-muted: #6b7280;
+      --border:     #e2e8f0;
+      --bg:         #ffffff;
+      --bg-light:   #f8fafc;
+      --bg-dark:    #040d1c;   /* bloo.io hero dark */
+      --bg-dark2:   #071426;   /* slightly lighter dark for bands */
+      --header-h:   72px;
+      --ease:       cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: calc(var(--header-h) + 1rem);
+      -webkit-text-size-adjust: 100%;
+      text-size-adjust: 100%;
+    }
+    body {
+      font-family: 'Lato', system-ui, sans-serif;
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 1.65;
+      background: var(--bg);
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+    a { color: var(--secondary); text-decoration: none; transition: opacity .15s; }
+    a:hover { opacity: .75; }
+    p { max-width: 68ch; }
+    ::selection { background: var(--accent); color: var(--bg-dark); }
+
+    /* Typography — brand book */
+    h1 { font-weight: 700; font-style: italic; line-height: 1.05; letter-spacing: -0.025em; }
+    h2 { font-weight: 700; font-style: normal; line-height: 1.15; letter-spacing: -0.015em; }
+    h3 { font-weight: 700; font-style: normal; line-height: 1.25; }
+
+    .container {
+      width: 100%; max-width: 1280px; margin: 0 auto;
+      padding-left: 1.5rem; padding-right: 1.5rem;
+    }
+    @media (min-width: 768px)  { .container { padding-left: 2.5rem; padding-right: 2.5rem; } }
+    @media (min-width: 1100px) { .container { padding-left: 4rem;   padding-right: 4rem;   } }
+
+    /* ═══════════════════════════════════════════════════════════
+       HEADER — white, sticky
+    ═══════════════════════════════════════════════════════════ */
+    .site-header {
+      position: fixed; inset: 0 0 auto 0; z-index: 100;
+      height: var(--header-h);
+      background: rgba(255,255,255,.97);
+      -webkit-backdrop-filter: blur(12px);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      transition: box-shadow .3s;
+    }
+    .site-header.scrolled { box-shadow: 0 2px 20px rgba(4,13,28,.1); }
+    .header-inner {
+      height: 100%; display: flex; align-items: center;
+      justify-content: space-between; gap: 1.5rem;
+    }
+    .header-left { display: flex; align-items: center; gap: 1rem; }
+    .header-right { display: flex; align-items: center; gap: .875rem; }
+
+    .wordmark { display: flex; align-items: center; text-decoration: none; }
+    .header-logo { height: 52px; width: auto; display: block; }
+    .product-logo { height: 56px; width: auto; max-width: 320px; display: block; }
+    .footer-logo { height: 44px; width: auto; display: block; filter: brightness(0) invert(1); opacity: .9; }
+    .header-divider { width: 1px; height: 1.125rem; background: var(--border); }
+    .header-label {
+      font-size: .6875rem; font-weight: 700; letter-spacing: .12em;
+      text-transform: uppercase; color: var(--text-muted);
+    }
+
+    /* Badges */
+    .badge {
+      display: inline-flex; align-items: center; gap: .3rem;
+      padding: .2rem .65rem; border-radius: 9999px;
+      font-size: .6875rem; font-weight: 700; letter-spacing: .06em; color: #fff;
+      background: var(--primary);
+    }
+    .badge-gold { background: var(--accent); color: var(--bg-dark); }
+    .badge-outline {
+      background: transparent; border: 1px solid rgba(255,255,255,.3);
+      color: rgba(255,255,255,.85);
+    }
+    .date-chip {
+      font-size: .75rem; color: var(--text-muted);
+      display: none;
+    }
+    @media (min-width: 540px) { .date-chip { display: block; } }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: .5rem;
+      font-family: 'Lato', sans-serif; font-weight: 700; border: none; border-radius: 5px;
+      cursor: pointer; text-decoration: none; white-space: nowrap;
+      transition: transform .15s, opacity .2s, box-shadow .2s;
+      min-height: 46px; padding: .625rem 1.5rem; font-size: .9375rem;
+    }
+    .btn:hover { transform: translateY(-1px); }
+    .btn-gold {
+      background: #2563EB; color: #fff;
+      box-shadow: 0 2px 12px rgba(37,99,235,.3);
+    }
+    .btn-gold:hover { opacity: .88; box-shadow: 0 4px 20px rgba(37,99,235,.45); color: #fff; }
+    .btn-ghost-white {
+      background: transparent; border: 1.5px solid rgba(255,255,255,.55); color: #fff;
+    }
+    .btn-ghost-white:hover { border-color: #fff; background: rgba(255,255,255,.08); opacity: 1; color: #fff; }
+    .btn-primary {
+      background: var(--primary); color: #fff;
+      box-shadow: 0 2px 12px rgba(0,67,141,.25);
+    }
+    .btn-primary:hover { opacity: .88; color: #fff; }
+    .btn-sm { min-height: 36px; padding: .4rem 1.1rem; font-size: .8125rem; }
+
+    /* ═══════════════════════════════════════════════════════════
+       HERO — very dark navy (matches bloo.io site aesthetic)
+    ═══════════════════════════════════════════════════════════ */
+    .hero {
+      position: relative; overflow: hidden;
+      background: var(--bg-dark);
+      padding-top: calc(var(--header-h) + 6rem);
+      padding-bottom: 6rem;
+      min-height: 680px;
+      display: flex; align-items: center;
+    }
+    /* Radial glow — brand blue from bottom-right */
+    .hero::before {
+      content: ''; position: absolute;
+      bottom: -10%; right: -5%;
+      width: 70vw; max-width: 900px; height: 70vw; max-height: 900px;
+      border-radius: 9999px;
+      background: radial-gradient(circle, rgba(0,67,141,.55) 0%, rgba(0,91,197,.18) 45%, transparent 70%);
+      pointer-events: none;
+    }
+    /* Grid texture */
+    .hero::after {
+      content: ''; position: absolute; inset: 0; pointer-events: none;
+      background-image:
+        linear-gradient(rgba(255,255,255,.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+    /* Top left accent glow */
+    .hero-glow {
+      position: absolute; top: 10%; left: -8%;
+      width: 45vw; max-width: 600px; height: 45vw; max-height: 600px;
+      border-radius: 9999px;
+      background: radial-gradient(circle, rgba(0,91,197,.2) 0%, transparent 65%);
+      pointer-events: none;
+    }
+
+    .hero-inner { position: relative; z-index: 2; }
+
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: .5rem;
+      padding: .3rem 1rem; border-radius: 9999px;
+      border: 1px solid rgba(0,91,197,.5);
+      background: rgba(0,67,141,.2);
+      font-size: .6875rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+      color: rgba(255,255,255,.75); margin-bottom: 1.75rem;
+    }
+    .eyebrow-dot { width: 6px; height: 6px; border-radius: 9999px; background: var(--accent); }
+
+    .hero-title {
+      font-size: clamp(2.25rem, 5.5vw, 4rem); font-weight: 700; font-style: italic;
+      letter-spacing: -0.025em; line-height: 1.05; color: #fff; margin-bottom: 1.5rem;
+    }
+    .hero-title em { font-style: italic; color: var(--accent); }
+
+    .hero-sub {
+      font-size: clamp(1rem, 1.6vw, 1.125rem); font-weight: 300; line-height: 1.7;
+      color: rgba(255,255,255,.68); max-width: 56ch; margin-bottom: 2.5rem;
+    }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: .875rem; align-items: center; }
+
+    /* ═══════════════════════════════════════════════════════════
+       TAGS BAR — dark, below hero (like bloo.io's latest research bar)
+    ═══════════════════════════════════════════════════════════ */
+    .tags-bar {
+      background: var(--bg-dark2);
+      border-bottom: 1px solid rgba(255,255,255,.07);
+    }
+    .tags-bar-inner {
+      display: flex; align-items: center; gap: 0; overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .tags-bar-inner::-webkit-scrollbar { display: none; }
+    .tags-bar-label {
+      font-size: .6875rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+      color: rgba(255,255,255,.4); white-space: nowrap; padding: .875rem 1.25rem .875rem 0;
+      border-right: 1px solid rgba(255,255,255,.08); margin-right: .875rem; flex-shrink: 0;
+    }
+    .tags-bar-link {
+      display: inline-flex; align-items: center; gap: .375rem;
+      padding: .875rem .875rem; white-space: nowrap; flex-shrink: 0;
+      font-size: .8125rem; font-weight: 700; color: rgba(255,255,255,.55);
+      text-decoration: none; border-bottom: 2px solid transparent; margin-bottom: -1px;
+      transition: color .15s, border-color .15s;
+    }
+    .tags-bar-link:hover { color: #fff; border-bottom-color: var(--accent); opacity: 1; }
+    .tags-bar-dot { width: 5px; height: 5px; border-radius: 9999px; background: var(--accent); }
+
+    /* ═══════════════════════════════════════════════════════════
+       JUMP NAV — white, sticky under header
+    ═══════════════════════════════════════════════════════════ */
+    .jump-nav {
+      position: sticky; top: var(--header-h); z-index: 50;
+      background: #fff; border-bottom: 1px solid var(--border);
+      box-shadow: 0 1px 8px rgba(4,13,28,.06);
+    }
+    .jump-nav-inner {
+      display: flex; align-items: center; overflow-x: auto;
+      -webkit-overflow-scrolling: touch; scrollbar-width: none;
+    }
+    .jump-nav-inner::-webkit-scrollbar { display: none; }
+    .jump-nav-label {
+      font-size: .6875rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+      color: var(--text-muted); white-space: nowrap; padding: .875rem 1.25rem .875rem 0;
+      border-right: 1px solid var(--border); margin-right: .875rem; flex-shrink: 0;
+    }
+    .jump-link {
+      font-size: .8125rem; font-weight: 700; color: var(--text-sub); text-decoration: none;
+      padding: .875rem .875rem; white-space: nowrap; flex-shrink: 0;
+      border-bottom: 2px solid transparent; margin-bottom: -1px;
+      transition: color .15s, border-color .15s;
+    }
+    .jump-link:hover { color: var(--primary); border-bottom-color: var(--primary); opacity: 1; }
+    .jump-link-dim { color: var(--text-muted); font-weight: 400; }
+
+    /* ═══════════════════════════════════════════════════════════
+       SECTIONS
+    ═══════════════════════════════════════════════════════════ */
+
+    /* Section eyebrow */
+    .section-eyebrow {
+      display: inline-block;
+      font-size: .6875rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
+      color: var(--secondary); margin-bottom: .875rem;
+    }
+    .section-eyebrow-light { color: rgba(255,255,255,.55); }
+
+    /* White section */
+    .section-white { padding: 5rem 0; background: var(--bg); }
+    .section-white + .section-white { border-top: 1px solid var(--border); }
+
+    /* Light section */
+    .section-light { padding: 5rem 0; background: var(--bg-light); }
+
+    /* Dark section */
+    .section-dark {
+      position: relative; overflow: hidden;
+      padding: 5rem 0; background: var(--bg-dark);
+      color: #fff;
+    }
+    .section-dark::before {
+      content: ''; position: absolute; inset: 0; pointer-events: none;
+      background-image:
+        linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+    .section-dark .section-inner { position: relative; z-index: 1; }
+
+    /* Product header */
+    .product-hdr {
+      display: flex; align-items: flex-start; justify-content: space-between;
+      flex-wrap: wrap; gap: 1rem;
+      padding-bottom: 1.75rem; margin-bottom: 3rem;
+      border-bottom: 2px solid var(--border);
+    }
+    .product-name {
+      font-size: clamp(2rem, 4vw, 2.75rem); font-weight: 700; font-style: italic;
+      letter-spacing: -0.025em; color: var(--primary);
+    }
+    .product-name-blue { color: var(--secondary); }
+    .product-meta-row { display: flex; align-items: center; gap: .75rem; flex-wrap: wrap; }
+    .meta-date {
+      font-size: .75rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    /* Feature groups */
+    .feature-groups { display: flex; flex-direction: column; gap: 3.5rem; }
+    .group-anchor { scroll-margin-top: calc(var(--header-h) + 4rem); }
+
+    .group-heading {
+      font-size: clamp(1.125rem, 2vw, 1.375rem); font-weight: 700; color: var(--primary);
+      padding-bottom: .625rem; border-bottom: 1px solid var(--border); margin-bottom: .875rem;
+    }
+    .group-desc {
+      font-size: .9375rem; line-height: 1.7; color: var(--text-sub);
+      max-width: 64ch; margin-bottom: 1.5rem;
+    }
+
+    /* Items list with gold left border */
+    .items-list {
+      padding-left: 1.375rem;
+      border-left: 3px solid var(--accent);
+    }
+
+    /* Release item */
+    .ri {
+      display: flex; align-items: flex-start; justify-content: space-between;
+      gap: 1.25rem; padding: 1.25rem 0; border-bottom: 1px solid var(--border);
+    }
+    .ri:last-child { border-bottom: none; }
+    .ri-body { flex: 1; min-width: 0; }
+    .ri-top { display: flex; flex-wrap: wrap; align-items: center; gap: .45rem; margin-bottom: .3rem; }
+    .ri-title { font-size: .9375rem; font-weight: 700; color: var(--text); }
+    .ri-badge {
+      padding: .1rem .45rem; border-radius: 3px;
+      background: var(--primary); color: #fff;
+      font-size: .55rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+    }
+    .ri-desc { font-size: .875rem; line-height: 1.65; color: var(--text-muted); }
+    .mono { font-family: 'Courier New', monospace; font-size: .82em; background: #f1f5f9; padding: .1em .35em; border-radius: 3px; border: 1px solid var(--border); color: var(--primary); }
+
+    /* Play button */
+    .play-btn {
+      flex-shrink: 0; width: 2.25rem; height: 2.25rem; border-radius: 9999px;
+      border: 1.5px solid var(--border); background: var(--bg-light); color: var(--text-muted);
+      display: flex; align-items: center; justify-content: center; text-decoration: none;
+      transition: border-color .2s, background .2s, color .2s;
+    }
+    .play-btn:hover { border-color: var(--primary); background: var(--primary); color: #fff; opacity: 1; }
+
+    /* ═══════════════════════════════════════════════════════════
+       STATS BAND — dark, matches bloo.io metrics section
+    ═══════════════════════════════════════════════════════════ */
+    .stats-band {
+      position: relative; overflow: hidden;
+      background: var(--bg-dark2);
+      padding: 4.5rem 0;
+      border-top: 1px solid rgba(255,255,255,.06);
+      border-bottom: 1px solid rgba(255,255,255,.06);
+    }
+    .stats-band::before {
+      content: ''; position: absolute; inset: 0; pointer-events: none;
+      background-image:
+        linear-gradient(rgba(255,255,255,.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.02) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+    .stats-grid {
+      position: relative; z-index: 1;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2rem 3rem;
+    }
+    @media (min-width: 640px) { .stats-grid { grid-template-columns: repeat(4, 1fr); } }
+    .stat { text-align: center; }
+    .stat-number {
+      font-size: clamp(2.5rem, 5vw, 3.5rem); font-weight: 700; font-style: italic;
+      letter-spacing: -0.025em; color: #fff; line-height: 1; margin-bottom: .375rem;
+    }
+    .stat-number span { color: var(--accent); }
+    .stat-label {
+      font-size: .75rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+      color: rgba(255,255,255,.45); line-height: 1.45;
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       CTA BAND — dark gradient
+    ═══════════════════════════════════════════════════════════ */
+    .cta-band {
+      position: relative; overflow: hidden;
+      background: linear-gradient(135deg, var(--bg-dark) 0%, #0d2448 60%, #00438d 100%);
+      padding: 6rem 0; text-align: center;
+    }
+    .cta-band::before {
+      content: ''; position: absolute; inset: 0; pointer-events: none;
+      background-image:
+        linear-gradient(rgba(255,255,255,.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+    .cta-band-inner { position: relative; z-index: 1; max-width: 50ch; margin: 0 auto; }
+    .cta-band-eyebrow { font-size: .6875rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); display: block; margin-bottom: .875rem; }
+    .cta-band-heading { font-size: clamp(1.875rem, 4vw, 2.75rem); font-weight: 700; font-style: italic; letter-spacing: -0.025em; color: #fff; margin-bottom: 1rem; }
+    .cta-band-sub { font-size: 1rem; font-weight: 300; color: rgba(255,255,255,.7); max-width: none; margin-bottom: 2rem; }
+    .cta-band-btns { display: flex; justify-content: center; flex-wrap: wrap; gap: .875rem; }
+
+    /* ═══════════════════════════════════════════════════════════
+       FOOTER — very dark (matches bloo.io)
+    ═══════════════════════════════════════════════════════════ */
+    .site-footer {
+      background: var(--bg-dark);
+      border-top: 1px solid rgba(255,255,255,.06);
+      padding: 4rem 0 2rem;
+    }
+    .footer-grid {
+      display: grid; gap: 2.5rem;
+      grid-template-columns: 1fr;
+      padding-bottom: 3rem;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+    @media (min-width: 640px) { .footer-grid { grid-template-columns: 1fr 1fr; } }
+    @media (min-width: 960px) { .footer-grid { grid-template-columns: 2fr 1fr 1fr 1fr; } }
+
+    .footer-wordmark { font-weight: 700; font-style: italic; font-size: 1.625rem; letter-spacing: -0.03em; color: #fff; text-decoration: none; display: block; margin-bottom: .75rem; }
+    .footer-tagline { font-size: .875rem; font-weight: 300; color: rgba(255,255,255,.5); line-height: 1.6; max-width: 28ch; }
+    .footer-col-title { font-size: .6875rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: rgba(255,255,255,.35); margin-bottom: 1rem; }
+    .footer-links { list-style: none; display: flex; flex-direction: column; gap: .6rem; }
+    .footer-links a { font-size: .875rem; font-weight: 400; color: rgba(255,255,255,.6); text-decoration: none; transition: color .15s; }
+    .footer-links a:hover { color: var(--accent); opacity: 1; }
+    .footer-bottom { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; justify-content: space-between; padding-top: 1.75rem; }
+    .footer-copy { font-size: .75rem; color: rgba(255,255,255,.3); }
+
+    /* Dark section heading/text helpers */
+    .dark-heading {
+      font-size: clamp(1.75rem, 3.5vw, 2.5rem); font-weight: 700; font-style: italic;
+      letter-spacing: -0.02em; color: #fff; margin-bottom: .875rem;
+    }
+    .dark-sub {
+      font-size: .9375rem; color: rgba(255,255,255,.62);
+      max-width: 54ch; margin-bottom: 2.75rem; line-height: 1.7;
+    }
+    .dark-items-list {
+      padding-left: 1.375rem; border-left: 3px solid var(--accent);
+    }
+    .ri-dark { border-bottom-color: rgba(255,255,255,.08); }
+    .ri-last { border-bottom: none; }
+    .ri-title-white { color: #fff; }
+    .ri-desc-white { color: rgba(255,255,255,.55); }
+    .play-btn-dark {
+      border-color: rgba(255,255,255,.15);
+      background: rgba(255,255,255,.05);
+      color: rgba(255,255,255,.45);
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       SCROLL REVEAL
+    ═══════════════════════════════════════════════════════════ */
+    .reveal { opacity: 0; transform: translateY(20px); transition: opacity .6s var(--ease), transform .6s var(--ease); }
+    .reveal.visible { opacity: 1; transform: none; }
+    @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="site-header" id="site-header">
+    <div class="container">
+      <div class="header-inner">
+        <div class="header-left">
+          <a href="https://bloo.io" class="wordmark" aria-label="Bloo — home">
+            <img src="imgs/bloo-logo-1.png" alt="Bloo" class="header-logo" />
+          </a>
+          <span class="header-divider"></span>
+          <span class="header-label">Release Notes</span>
+        </div>
+        <div class="header-right">
+          <span class="badge">v0.1 GA</span>
+          <span class="date-chip">22 June 2026</span>
+          <a href="https://bloo.io/request-demo" class="btn btn-gold btn-sm">Request demo</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-glow"></div>
+    <div class="container">
+      <div class="hero-inner reveal">
+        <div class="hero-eyebrow">
+          <span class="eyebrow-dot"></span>
+          Bloo SynthAI &nbsp;·&nbsp; General Availability
+        </div>
+        <h1 class="hero-title">
+          Query intelligence,<br>
+          without <em>compromise.</em>
+        </h1>
+        <p class="hero-sub">
+          SynthAI answers natural-language security questions by decomposing them across Datafabric streams, executing parallel SQL in real time, and synthesising structured, source-attributed responses — with every token spent and query run fully auditable.
+        </p>
+        <div class="hero-actions">
+          <a href="https://www.youtube.com/@bloo" target="_blank" rel="noopener noreferrer" class="btn btn-gold">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            Watch walkthrough
+          </a>
+          <a href="https://bloo.io/request-demo" class="btn btn-ghost-white">
+            Request a demo
+            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TAGS BAR — version / product quick-links -->
+  <div class="tags-bar">
+    <div class="container">
+      <div class="tags-bar-inner">
+        <span class="tags-bar-label">Release v0.1</span>
+        <a href="#auth" class="tags-bar-link"><span class="tags-bar-dot"></span>Authentication</a>
+        <a href="#pipeline" class="tags-bar-link"><span class="tags-bar-dot"></span>Pipeline</a>
+        <a href="#multi-llm" class="tags-bar-link"><span class="tags-bar-dot"></span>Multi-LLM</a>
+        <a href="#token-usage" class="tags-bar-link"><span class="tags-bar-dot"></span>Token Usage</a>
+        <a href="#embeddings" class="tags-bar-link"><span class="tags-bar-dot"></span>Embeddings</a>
+        <a href="#recommendations" class="tags-bar-link"><span class="tags-bar-dot"></span>Recommendations</a>
+        <a href="crucible/index.html" class="tags-bar-link">Crucible →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- JUMP NAV — sticky -->
+  <nav class="jump-nav" aria-label="On-page sections">
+    <div class="container">
+      <div class="jump-nav-inner">
+        <span class="jump-nav-label">Jump to</span>
+        <a href="#auth" class="jump-link">Authentication</a>
+        <a href="#pipeline" class="jump-link">Pipeline</a>
+        <a href="#multi-llm" class="jump-link">Multi-LLM</a>
+        <a href="#token-usage" class="jump-link">Token Usage</a>
+        <a href="#embeddings" class="jump-link">Embeddings</a>
+        <a href="#recommendations" class="jump-link">Recommendations</a>
+        <a href="#deployment" class="jump-link jump-link-dim">Deployment</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- MAIN CONTENT -->
+  <main>
+
+    <!-- Feature release section — white bg -->
+    <section class="section-white">
+      <div class="container">
+
+        <div class="product-hdr reveal">
+          <div>
+            <p class="section-eyebrow">Bloo SynthAI</p>
+            <img src="imgs/synthai-logo-black-transparent.png" alt="Bloo SynthAI" class="product-logo" />
+          </div>
+          <div class="product-meta-row">
+            <span class="badge badge-gold">v1.0 GA</span>
+            <span class="meta-date">22 June 2026</span>
+          </div>
+        </div>
+
+        <div class="feature-groups">
+
+          <!-- Auth -->
+          <div id="auth" class="group-anchor reveal">
+            <h3 class="group-heading">Authentication &amp; Session Management</h3>
+            <p class="group-desc">SynthAI's authentication layer ensures every query is identity-bound and tenant-scoped. All pipeline operations require an authenticated session; unauthenticated requests are rejected at the gateway before any data or LLM call is made.</p>
+            <div class="items-list">
+              <div class="ri">
+                <div class="ri-body">
+                  <div class="ri-top"><span class="ri-title">Tenant-Scoped Sessions</span><span class="ri-badge">V1.0</span></div>
+                  <p class="ri-desc">Sessions are scoped per tenant and user, with short-lived tokens refreshed transparently. Every pipeline execution is attributed to a specific authenticated identity in the audit record.</p>
+                </div>
+                <a href="https://www.youtube.com/@bloo" target="_blank" rel="noopener noreferrer" class="play-btn" aria-label="Watch"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></a>
+              </div>
+              <div class="ri">
+                <div class="ri-body">
+                  <div class="ri-top"><span class="ri-title">LLM Credential Storage</span><span class="ri-badge">V1.0</span></div>
+                  <p class="ri-desc">API keys are sealed in HashiCorp Vault at <span class="mono">{tenant_id}/{scope_id}/llm_connections/{name}</span> the moment they are entered. They are never stored in the application database and never returned by any read API after initial save.</p>
+                </div>
+                <a href="https://www.youtube.com/@bloo" target="_blank" rel="noopener noreferrer" class="play-btn" aria-label="Watch"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Pipeline -->
+          <div id="pipeline" class="group-anchor reveal">
+            <h3 class="group-heading">Pipeline Factory — 5-Stage Query Intelligence Pipeline</h3>
+            <p class="group-desc">Every question flows through a five-stage deterministic pipeline. Each stage emits live progress over WebSocket so analysts watch the system working — not a loading spinner.</p>
+            <div class="items-list">
+              <div class="ri">
+                <div class="ri-body"><div class="ri-top"><span class="ri-title">Stage 1 — Decomposer</span><span class="ri-badge">V1.0</span></div><p class="ri-desc">A QuestionDecomposer breaks the natural-language question into independent sub-questions, each mapped to a specific Datafabric stream with a defined time range and candidate fields.</p></div>
+                <a href="https://www.youtube.com/@bloo" target="_blank" rel="noopener noreferrer" class="play-btn" aria-label="Watch"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></a>
+              </div>
+              <div class="ri">
+                <div class="ri-body"><div class="ri-top"><span class="ri-title">Stage 2 — Query Generator</span><span class="ri-badge">V1.0</span></div><p class="ri-desc">A QueryGenerator converts each sub-question into validated SQL with explicit field mappings and time-range constraints. A guardrails layer blocks unsafe patterns — no DDL statements, no unbounded time scans, no cross-scope joins.</p></div>
+                <a href="https://www.youtube.com/@bloo" target="_blank" rel="noopener noreferrer" class="play-btn" aria-label="Watch"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></a>
+              </div>
+              <div class="ri">
+                <div class="ri-body"><div class="ri-top"><span class="ri-title">Stage 3 — Executor</span><span class="ri-badge">V1.0</span></div><p class="ri-desc">A DatafabricExecutor runs all sub-queries in parallel using asyncio.gather(), each scoped to the tenant's scope_id. The Datafabric platform enforces data isolation independently as a second layer.</p></div>
+                <a href="https://www.youtube.com/@bloo" target="_blank" rel="noopener noreferrer" class="play-btn" aria-label="Watch"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></a>
+              </div>
+              <div class="ri">
+                <div class="ri-body"><div class="ri-top"><span class="ri-title">Stage 4 — Analyser</span><span class="ri-badge">V1.0</span></div><p class="ri-desc">A ResultAnalyzer summarises each result set independently — extracting key findings, flagging notable values, and assigning a per-stream severity rating (critical / high / medium / low / info / none).</p></div>
+                <a href="https://www.youtube.com/@bloo" target="_blank" rel="noopener noreferrer" class="play-btn" aria-label="Watch"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></a>
+              </div>
+              <div class="ri">
+                <div class="ri-body"><div class="ri-top"><span class="ri-title">Stage 5 — Synthesizer</span><span class="ri-badge">V1.0</span></div><p class="ri-desc">A Synthesizer fuses all analyses into a single structured response, streamed token-by-token. Every response includes: direct answer, source-attributed evidence cards, confidence rating, chain-of-thought reasoning, severity assessment, and the exact SQL executed.</p></div>
+                <a href="https://www.youtube.com/@bloo" target="_blank" rel="noopener noreferrer" class="play-btn" aria-label="Watch"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Multi-LLM -->
+          <div id="multi-llm" class="group-anchor reveal">
+            <h3 class="group-heading">Multi-LLM Provider Support</h3>
+            <p class="group-desc">SynthAI supports four LLM provider families out of the box. Different scopes within the same organisation can use different providers simultaneously, and switching providers requires no pipeline code changes.</p>
+            <div class="items-list">
+              <div class="ri">
+                <div class="ri-body"><div class="ri-top"><span class="ri-title">Anthropic</span><span class="ri-badge">V1.0</span></div><p class="ri-desc">Long-context reasoning and complex multi-stream investigations. Recommended for deep investigative queries across large Datafabric datasets.</p></div>
+                <a href="https://www.youtube.com/@bloo" target="_blank" rel="noopener noreferrer" class="play-btn" aria-label="Watch"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></a>
+              </div>
+              <div class="ri">
+                <div class="ri-body"><div class="ri-top"><span class="ri-title">OpenAI &amp; AWS Bedrock</span><span class="ri-badge">V1.0</span></div><p class="ri-desc">OpenAI for broad enterprise familiarity and wide model choice; AWS Bedrock for AWS-resident deployments and data residency commitments.</p></div>
+                <a href="https://www.youtube.com/@bloo" target="_blank" rel="noopener noreferrer" class="play-btn" aria-label="Watch"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></a>
+              </div>
+              <div class="ri">
+                <div class="ri-body"><div class="ri-top"><span class="ri-title">Ollama (Self-Hosted)</span><span class="ri-badge">V1.0</span></div><p class="ri-desc">Fully self-hosted, air-gapped or data-sovereignty-constrained environments. No external API calls — LLM execution stays entirely within the customer environment.</p></div>
+                <a href="https://www.youtube.com/@bloo" target="_blank" rel="noopener noreferrer" class="play-btn" aria-label="Watch"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Token Usage -->
+          <div id="token-usage" class="group-anchor reveal">
+            <h3 class="group-heading">Token &amp; Usage Transparency</h3>
+            <p class="group-desc">Every LLM call across all five pipeline stages is logged to an append-only usage ledger. Users watch tokens consumed and estimated cost update in real time while the pipeline is still running.</p>
+            <div class="items-list">
+              <div class="ri">
+                <div class="ri-body"><div class="ri-top"><span class="ri-title">Real-Time Cost Ledger</span><span class="ri-badge">V1.0</span></div><p class="ri-desc">A RequestUsage accumulator aggregates all calls for the current question and pushes a live usage_update event to the browser after each LLM call completes — provider, model, input tokens, output tokens, cache usage, estimated USD cost, latency, and success state.</p></div>
+                <a href="https://www.youtube.com/@bloo" target="_blank" rel="noopener noreferrer" class="play-btn" aria-label="Watch"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></a>
+              </div>
+              <div class="ri">
+                <div class="ri-body"><div class="ri-top"><span class="ri-title">Compliance Audit Trail</span><span class="ri-badge">V1.0</span></div><p class="ri-desc">Every usage record is attributed to a specific user, scope, and connection, persisted in PostgreSQL for cost reporting and compliance audit. Records cannot be modified or deleted through the application layer.</p></div>
+                <a href="https://www.youtube.com/@bloo" target="_blank" rel="noopener noreferrer" class="play-btn" aria-label="Watch"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Embeddings -->
+          <div id="embeddings" class="group-anchor reveal">
+            <h3 class="group-heading">Scope-Specific Extractor Embeddings</h3>
+            <p class="group-desc">SynthAI automatically generates and continuously refines extractor embeddings scoped to each customer's Datafabric environment, derived from real query execution results.</p>
+            <div class="items-list">
+              <div class="ri">
+                <div class="ri-body"><div class="ri-top"><span class="ri-title">Cumulative Schema Learning</span><span class="ri-badge">V1.0</span></div><p class="ri-desc">Embeddings capture actual field names, value distributions, confirmed stream identifiers, and field co-occurrence patterns as they exist in the customer's production data. The more queries a scope executes, the more precisely SynthAI maps sub-questions to the right streams.</p></div>
+                <a href="https://www.youtube.com/@bloo" target="_blank" rel="noopener noreferrer" class="play-btn" aria-label="Watch"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></a>
+              </div>
+              <div class="ri">
+                <div class="ri-body"><div class="ri-top"><span class="ri-title">Strict Tenant Isolation</span><span class="ri-badge">V1.0</span></div><p class="ri-desc">Embeddings are stored per (tenant_id, scope_id) and are never shared across tenants — one customer's schema vocabulary cannot influence another's pipeline.</p></div>
+                <a href="https://www.youtube.com/@bloo" target="_blank" rel="noopener noreferrer" class="play-btn" aria-label="Watch"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Recommendations -->
+          <div id="recommendations" class="group-anchor reveal">
+            <h3 class="group-heading">Recommendation Control</h3>
+            <p class="group-desc">Users can toggle the Recommendations section of any response on or off per session. When disabled, the synthesizer omits the recommendations block entirely and no follow-up investigation tasks are spawned.</p>
+            <div class="items-list">
+              <div class="ri">
+                <div class="ri-body"><div class="ri-top"><span class="ri-title">Per-Session Toggle</span><span class="ri-badge">V1.0</span></div><p class="ri-desc">The toggle persists for the session and is respected by the streaming protocol, giving teams flexibility to run in deep exploratory mode or lean query mode depending on the task at hand.</p></div>
+                <a href="https://www.youtube.com/@bloo" target="_blank" rel="noopener noreferrer" class="play-btn" aria-label="Watch"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></a>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- STATS BAND — dark section like bloo.io metrics -->
+    <div class="stats-band">
+      <div class="container">
+        <div class="stats-grid reveal">
+          <div class="stat">
+            <div class="stat-number">5<span>+</span></div>
+            <div class="stat-label">Pipeline stages per<br>query execution</div>
+          </div>
+          <div class="stat">
+            <div class="stat-number"><span>4</span></div>
+            <div class="stat-label">LLM provider<br>families supported</div>
+          </div>
+          <div class="stat">
+            <div class="stat-number">100<span>%</span></div>
+            <div class="stat-label">Token usage<br>audited in real time</div>
+          </div>
+          <div class="stat">
+            <div class="stat-number">0</div>
+            <div class="stat-label">Customer data leaves<br>the environment</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DEPLOYMENT — dark section -->
+    <section id="deployment" class="section-dark">
+      <div class="section-inner">
+        <div class="container">
+          <div class="reveal">
+            <p class="section-eyebrow section-eyebrow-light">Deployment &amp; Security</p>
+            <h2 class="dark-heading">Enterprise-grade security,<br>on your infrastructure.</h2>
+            <p class="dark-sub">Both Bloo products are self-hosted on Kubernetes on AWS or Azure. Customer data — including query payloads and AI call content — never leaves your environment.</p>
+          </div>
+          <div class="feature-groups reveal">
+            <div class="dark-items-list">
+              <div class="ri ri-dark">
+                <div class="ri-body"><div class="ri-top"><span class="ri-title ri-title-white">Self-Hosted Kubernetes</span><span class="ri-badge">V1.0</span></div><p class="ri-desc ri-desc-white">Deploys on Kubernetes on AWS or Azure. Customer data — including investigation records, query payloads, and AI call content — does not leave the customer's environment.</p></div>
+                <a href="https://www.youtube.com/@bloo" target="_blank" rel="noopener noreferrer" class="play-btn play-btn-dark" aria-label="Watch"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></a>
+              </div>
+              <div class="ri ri-dark">
+                <div class="ri-body"><div class="ri-top"><span class="ri-title ri-title-white">Air-Gapped Deployments</span><span class="ri-badge">V1.0</span></div><p class="ri-desc ri-desc-white">Air-gapped deployments are supported via Ollama for LLM execution. No external AI API calls required — the entire pipeline runs within the customer perimeter.</p></div>
+                <a href="https://www.youtube.com/@bloo" target="_blank" rel="noopener noreferrer" class="play-btn play-btn-dark" aria-label="Watch"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></a>
+              </div>
+              <div class="ri ri-last">
+                <div class="ri-body"><div class="ri-top"><span class="ri-title ri-title-white">Secrets &amp; Audit</span><span class="ri-badge">V1.0</span></div><p class="ri-desc ri-desc-white">All integration and LLM credentials are sealed in enterprise-grade secrets vaults. Session tokens use short TTLs with silent refresh. Every action and AI reasoning step is written to an append-only audit trail.</p></div>
+                <a href="https://www.youtube.com/@bloo" target="_blank" rel="noopener noreferrer" class="play-btn play-btn-dark" aria-label="Watch"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA BAND -->
+    <div class="cta-band">
+      <div class="container">
+        <div class="cta-band-inner reveal">
+          <span class="cta-band-eyebrow">Bloo SynthAI</span>
+          <h2 class="cta-band-heading">Ready to see SynthAI in action?</h2>
+          <p class="cta-band-sub">Schedule a live demo with a Bloo engineer — see the full pipeline run on your own telemetry questions.</p>
+          <div class="cta-band-btns">
+            <a href="https://bloo.io/request-demo" class="btn btn-gold">Request a demo</a>
+            <a href="https://bloo.io/platform/synthai" class="btn btn-ghost-white">Explore the platform</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <a href="https://bloo.io" class="footer-wordmark" aria-label="Bloo — home">
+            <img src="imgs/bloo-logo-1.png" alt="Bloo" class="footer-logo" />
+          </a>
+          <p class="footer-tagline">The system of record for Telemetry Intelligence.</p>
+        </div>
+        <div>
+          <p class="footer-col-title">Platform</p>
+          <ul class="footer-links">
+            <li><a href="https://bloo.io/platform">Overview</a></li>
+            <li><a href="https://bloo.io/platform/synthai">SynthAI</a></li>
+            <li><a href="https://bloo.io/platform/crucible">Crucible</a></li>
+            <li><a href="https://bloo.io/platform/datafabric">Datafabric</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="footer-col-title">Resources</p>
+          <ul class="footer-links">
+            <li><a href="https://bloo.io/resources">All resources</a></li>
+            <li><a href="#">Release notes</a></li>
+            <li><a href="https://www.youtube.com/@bloo" target="_blank" rel="noopener noreferrer">YouTube</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="footer-col-title">Company</p>
+          <ul class="footer-links">
+            <li><a href="https://bloo.io/request-demo">Request demo</a></li>
+            <li><a href="https://bloo.io/privacy">Privacy</a></li>
+            <li><a href="https://bloo.io/terms">Terms</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span class="footer-copy">&copy; 2026 Bloo Systems, Inc. All rights reserved.</span>
+        <span class="footer-copy">Release Notes — Version 0.1 · 22 June 2026</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const hdr = document.getElementById('site-header');
+    window.addEventListener('scroll', () => hdr.classList.toggle('scrolled', window.scrollY > 8), { passive: true });
+    const io = new IntersectionObserver(
+      es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } }),
+      { threshold: 0.05, rootMargin: '0px 0px -20px 0px' }
+    );
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+  </script>
+</body>
+</html>
